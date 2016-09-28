@@ -188,15 +188,15 @@
 
           break;
       }
-      if(directionCommand){
-        commandList.push(command);
-      }
 
       if(!hasRepeat){
+        if(directionCommand){
+          commandList.push(command);
+        }
         $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true">&nbsp;</span>');
         hasRepeat = repeat;
+        execute(command);
       }
-      execute(command);
     }
 
     var keepPlaying = true;
@@ -235,6 +235,7 @@
     }
     function reset(){
       repeat = false;
+      hasRepeat = false;
       commandList = [];
       restart();
       $('#command-panel').children().remove();
