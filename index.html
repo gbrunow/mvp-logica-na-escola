@@ -148,6 +148,9 @@
       x = x > 0 ? x : 0;
       y = y > 0 ? y : 0;
 
+      x = x < 700 ? x : 700;
+      y = y < 450 ? y : 450;
+
       $("#vehicule").removeClass().addClass(command);
       var movement = $("#vehicule span").animate({ top: y, left: x });
       return movement;
