@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Laços de Repetição</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <style>
+    #header{
+      /*background-color: gray;*/
+      height: 40px;
+      width: 100%;
+      text-align: center;
+      color: #DE6D77;
+      font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
+    }
+    #screen {
+      height: 535px;
+      /*background-color: #5C636F;*/
+      border: solid 2px #5C636F;
+      margin-top: 5px;
+    }
+
+    #command-panel{
+        width: 100%;
+        min-height: 55px;
+        margin: 0 !important;
+        height: auto;
+        border-color: #5C636F;
+        border-style: solid;
+        border-width: 2px;
+        border-top: none;
+        margin-top: 5px;
+        padding: 5px;
+    }
+/*'#ABB2BE', '#', '#5AB6C1', '#63ADE9', '#C57BDB', '#DE6D77']*/
+    #command-panel .up{
+        color: #DE6D77;
+    }
+
+    #command-panel .down{
+        color: #99C27C;
+    }
+
+    #command-panel .left{
+        color: #5AB6C1;
+    }
+
+    #command-panel .right{
+        color: #E1C090;
+    }
+
+    #command-panel .repeat, h2 .repeat{
+        color: #C57BDB;
+    }
+
+    #command-panel .up{
+        color: #DE6D77;
+    }
+
+    #screen .vehicule{
+      font-size: 5em;
+      color: white;
+      margin: 5px;
+    }
+
+    #vehicule span{
+      transition: transform 250ms;
+    }
+    #vehicule.right span{
+      transform: rotate(90deg);
+    }
+
+    #vehicule.left span{
+      transform: rotate(-90deg);
+    }
+
+    #vehicule.up span{
+      transform: rotate(0deg) !important;
+    }
+
+    #vehicule.down span{
+      transform: rotate(180deg);
+    }
+    #actions{
+      width: auto;
+      border: solid 1px #282C34;
+      text-align: right;
+    }
+    #commands{
+      text-align: center;
+      padding: 5px;
+    }
+    #game-wrapper{
+      width: 790px;
+      float: left;
+    }
+
+    #wrapper{
+      width: 850px;
+      height: auto;
+      margin: 0 auto;
+    }
+    body {
+      background-color: #282C34;
+    }
+
+    button {
+      margin-top: 5px;
+    }
+  </style>
+  <script>
+    var commandList = [];
+    var repeat = false;
+    var x = 0,
+        y = 0;
+
+    function execute(command){
+      var directionCommand = true;
+
+      switch (command) {
+        case 'up':
+          y -= 50;
+          break;
+        case 'down':
+          y += 50;
+          break;
+        case 'left':
+          x -= 50;
+          break;
+        case 'right':
+          x += 50;
+          break;
+        default:
+          directionCommand = false;
+          break;
+      }
+      if(directionCommand){
+        return move(command);
+      }
+    }
+    function move(command){
+      x = x > 0 ? x : 0;
+      y = y > 0 ? y : 0;
+
+      $("#vehicule").removeClass().addClass(command);
+      var movement = $("#vehicule span").animate({ top: y, left: x });
+      return movement;
+    }
+
+    var hasRepeat = false;
+    function addCommand(command){
+      var icon;
+      var directionCommand = true;
+
+      switch (command) {
+        case 'up':
+          icon = 'glyphicon-arrow-up';
+          break;
+
+        case 'down':
+          icon = 'glyphicon-arrow-down';
+          break;
+
+        case 'left':
+          icon = 'glyphicon-arrow-left';
+          break;
+
+        case 'right':
+          icon = 'glyphicon-arrow-right';
+          break;
+
+        case 'repeat':
+          icon = 'glyphicon-retweet';
+          repeat = true;
+          directionCommand = false;
+          break;
+
+        default:
+
+          break;
+      }
+      if(directionCommand){
+        commandList.push(command);
+      }
+
+      if(!hasRepeat){
+        $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true">&nbsp;</span>');
+        hasRepeat = repeat;
+      }
+      execute(command);
+    }
+
+    var keepPlaying = true;
+    function play(){
+      keepPlaying = true;
+      restart();
+      run(0);
+    }
+
+    function stop(){
+      keepPlaying = false;
+      restart();
+    }
+
+    function run(index){
+      if(index >= commandList.length){
+        if(repeat){
+          index = 0;
+        } else {
+          keepPlaying = false;
+        }
+      }
+
+      if(keepPlaying){
+        var animate = execute(commandList[index]);
+        animate.promise().done(function(){
+          run(++index);
+        });
+      }
+    }
+
+    function restart(){
+      x = 0;
+      y = 0;
+      move('right');
+    }
+    function reset(){
+      repeat = false;
+      commandList = [];
+      restart();
+      $('#command-panel').children().remove();
+    }
+  </script>
+</head>
+<body>
+  <div id="header">
+    <h2>Laços de Repetição
+      <span class="glyphicon glyphicon-retweet repeat" aria-hidden="true"></span>
+    </h2>
+  </div>
+  <div id="wrapper">
+    <div id="game-wrapper">
+      <div id="screen">
+        <div id="vehicule" class="right">
+          <span class="glyphicon glyphicon-plane vehicule" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div id="command-panel"> </div>
+      <div id="commands">
+        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('right');">
+          <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('left');">
+          <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('down');">
+          <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('up');">
+          <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('repeat');">
+          <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <div id="actions">
+      <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-play" aria-hidden="true" onclick="play()"></span>
+      </button>
+      <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-stop" aria-hidden="true" onclick="stop()"></span>
+      </button>
+      <button type="button" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-repeat" aria-hidden="true" onclick="reset()"></span>
+      </button>
+    </div>
+  </div>
+</body>
