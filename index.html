@@ -19,11 +19,24 @@
       color: #DE6D77;
       font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
     }
+
+    #wrapper{
+      width: 850px;
+      height: auto;
+      margin: 0 auto;
+      position: relative;
+    }
+
     #screen {
       height: 535px;
-      /*background-color: #5C636F;*/
       border: solid 2px #5C636F;
       margin-top: 5px;
+      position: relative;
+    }
+
+    #vehicule{
+      bottom: 0;
+      position: absolute;
     }
 
     #command-panel{
@@ -39,11 +52,11 @@
         padding: 5px;
     }
 /*'#ABB2BE', '#', '#5AB6C1', '#63ADE9', '#C57BDB', '#DE6D77']*/
-    #command-panel .up{
+    #command-panel .front{
         color: #DE6D77;
     }
 
-    #command-panel .down{
+    #command-panel .back{
         color: #99C27C;
     }
 
@@ -56,61 +69,96 @@
     }
 
     #command-panel .repeat, h2 .repeat{
-        color: #C57BDB;
+        color: white;
     }
 
-    #command-panel .up{
+    #command-panel .front{
         color: #DE6D77;
     }
 
-    #screen .vehicule{
+    .vehicule{
       font-size: 5em;
-      color: white;
       margin: 5px;
+    }
+
+    .vehicule-ok{
+      color: white;
+    }
+
+    .vehicule-damaged{
+      color: #DE6D77;
     }
 
     #vehicule span{
       transition: transform 500ms;
     }
-    #vehicule.right span{
-      transform: rotate(90deg);
-    }
 
-    #vehicule.left span{
-      transform: rotate(-90deg);
-    }
-
-    #vehicule.up span{
-      transform: rotate(0deg) !important;
-    }
-
-    #vehicule.down span{
-      transform: rotate(180deg);
-    }
     #actions{
       width: auto;
       border: solid 1px #282C34;
       text-align: right;
     }
-    #commands{
+
+    #commands .btn-circle {
+      margin: 5px;
+    }
+
+    #commands > div {
+      float: left;
+    }
+
+    #commands-wrapper{
       text-align: center;
-      padding: 5px;
+      width: 100%;
+    }
+
+    #commands {
+      display: inline-block;
     }
     #game-wrapper{
       width: 790px;
       float: left;
     }
 
-    #wrapper{
-      width: 850px;
-      height: auto;
-      margin: 0 auto;
-    }
     body {
       background-color: #282C34;
     }
 
-    button {
+    btn-circle {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 12px;
+      line-height: 1.428571429;
+      border-radius: 15px;
+    }
+    button:focus {
+      outline:0 !important;
+    }
+
+    .btn-circle.btn-lg {
+      width: 50px;
+      height: 50px;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.33;
+      border-radius: 25px;
+    }
+    .btn-circle.btn-xl {
+      width: 70px;
+      height: 70px;
+      padding: 10px 16px;
+      font-size: 24px;
+      line-height: 1.33;
+      border-radius: 35px;
+    }
+
+    .turn-left {
+      transform: scale(-1, 1);
+    }
+
+    #actions > button {
       margin-top: 5px;
     }
   </style>
@@ -119,69 +167,91 @@
     var repeat = false;
     var x = 0,
         y = 0;
+    var degree = 0;
 
     function execute(command){
       var directionCommand = true;
+      var step = 50;
+      var w = (degree % 360 + 90) * Math.PI/180;
 
       switch (command) {
-        case 'up':
-          y -= 50;
+        case 'front':
+          x -=  step * Math.cos(w);
+          y -= step * Math.sin(w);
           break;
-        case 'down':
-          y += 50;
+        case 'back':
+          x +=  step * Math.cos(w);
+          y += step * Math.sin(w);
           break;
         case 'left':
-          x -= 50;
+          degree -= 90;
           break;
         case 'right':
-          x += 50;
+          degree += 90;
+          break;
+        case 'repeat':
+          repeat = true;
           break;
         default:
-          directionCommand = false;
+          // directionCommand = false;
           break;
       }
+
+      x = Math.round(x);
+      y = Math.round(y);
+
       if(directionCommand){
         return move(command);
       }
     }
     function move(command){
+      if(x < 0 || x > 700 || y < -450 || y > 0){
+        $('.vehicule').removeClass('vehicule-ok').addClass('vehicule-damaged');
+        // $('.vehicule').addClass('vehicule-damaged');
+        keepPlaying = false;
+        repeat = false;
+      }
+
       x = x > 0 ? x : 0;
-      y = y > 0 ? y : 0;
+      y = y < 0 ? y : 0;
 
       x = x < 700 ? x : 700;
-      y = y < 450 ? y : 450;
+      y = y > -450 ? y : -450;
 
-      $("#vehicule").removeClass().addClass(command);
+      // $("#vehicule").removeClass().addClass(command);
+      $("#vehicule>span").css({'transform' : 'rotate('+ degree +'deg)'});
       var movement = $("#vehicule span").animate({ top: y, left: x });
       return movement;
     }
 
     var hasRepeat = false;
+    var repeatIndex = 0;
     function addCommand(command){
       var icon;
       var directionCommand = true;
 
       switch (command) {
-        case 'up':
-          icon = 'glyphicon-arrow-up';
+        case 'front':
+          icon = 'glyphicon-arrow-right';
           break;
 
-        case 'down':
-          icon = 'glyphicon-arrow-down';
-          break;
-
-        case 'left':
+        case 'back':
           icon = 'glyphicon-arrow-left';
           break;
 
+        case 'left':
+          icon = 'glyphicon-share-alt turn-left';
+          break;
+
         case 'right':
-          icon = 'glyphicon-arrow-right';
+          icon = 'glyphicon-share-alt';
           break;
 
         case 'repeat':
           icon = 'glyphicon-retweet';
           repeat = true;
-          directionCommand = false;
+          repeatIndex = commandList.length;
+          // directionCommand = false;
           break;
 
         default:
@@ -190,11 +260,11 @@
       }
 
       if(!hasRepeat){
-        if(directionCommand){
+        // if(directionCommand){
           commandList.push(command);
-        }
-        $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true">&nbsp;</span>');
-        hasRepeat = repeat;
+        // }
+        $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true"></span><span>&nbsp;</span>');
+        // hasRepeat = repeat;
         execute(command);
       }
     }
@@ -208,13 +278,14 @@
 
     function stop(){
       keepPlaying = false;
+      repeat = false;
       restart();
     }
 
     function run(index){
       if(index >= commandList.length){
         if(repeat){
-          index = 0;
+          index = repeatIndex;
         } else {
           keepPlaying = false;
         }
@@ -231,7 +302,10 @@
     function restart(){
       x = 0;
       y = 0;
+      degree = 0;
+      repeat = false;
       move('right');
+      $('.vehicule').removeClass('vehicule-damaged').addClass('vehicule-ok');
     }
     function reset(){
       repeat = false;
@@ -239,7 +313,71 @@
       commandList = [];
       restart();
       $('#command-panel').children().remove();
+      $('button').show('fast');
     }
+
+    $(document).ready(function () {
+      var backs = 2,
+          fronts = 4,
+          lefts = 2,
+          rights = 2;
+
+      var backButton  = $('.back-stack').html();
+      var frontButton = $('.front-stack').html();
+      var leftButton  = $('.left-stack').html();
+      var rightButton = $('.right-stack').html();
+
+      for(var i = 0; i < backs; i++){
+        $('.back-stack').append(backButton);
+      }
+      for(var i = 0; i < fronts; i++){
+        $('.front-stack').append(frontButton);
+      }
+      for(var i = 0; i < lefts; i++){
+        $('.left-stack').append(leftButton);
+      }
+      for(var i = 0; i < rights; i++){
+        $('.right-stack').append(rightButton);
+      }
+
+
+      $('.btn-play').on('click', function(){
+        play();
+      });
+
+      $('.btn-stop').on('click', function(){
+        stop();
+      });
+
+      $('.btn-reset').on('click', function(){
+        reset();
+      });
+
+      $('.btn-front').on('click', function(){
+        addCommand('front');
+        $(this).toggle('fast');
+      });
+
+      $('.btn-back').on('click', function(){
+        addCommand('back');
+        $(this).toggle('fast');
+      });
+
+      $('.btn-left').on('click', function(){
+        addCommand('left');
+        $(this).toggle('fast');
+      });
+
+      $('.btn-right').on('click', function(){
+        addCommand('right');
+        $(this).toggle('fast');
+      });
+
+      $('.btn-repeat').on('click', function(){
+        addCommand('repeat');
+        $(this).toggle('fast');
+      });
+  });
   </script>
 </head>
 <body>
@@ -251,38 +389,58 @@
   <div id="wrapper">
     <div id="game-wrapper">
       <div id="screen">
-        <div id="vehicule" class="right">
-          <span class="glyphicon glyphicon-plane vehicule" aria-hidden="true"></span>
+        <div id="vehicule">
+          <span class="glyphicon glyphicon-plane vehicule vehicule-ok" aria-hidden="true"></span>
         </div>
       </div>
       <div id="command-panel"> </div>
-      <div id="commands">
-        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('right');">
-          <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-        </button>
-        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('left');">
-          <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-        </button>
-        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('down');">
-          <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-        </button>
-        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('up');">
-          <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-        </button>
-        <button type="button" class="btn btn-default btn-lg" onclick="addCommand('repeat');">
-          <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
-        </button>
+      <div id="commands-wrapper">
+        <div id="commands">
+          <div class="left-stack">
+            <div>
+              <button type="button" class="btn btn-primary btn-circle btn-lg btn-left">
+                <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="right-stack">
+            <div>
+              <button type="button" class="btn btn-warning btn-circle btn-lg btn-right">
+                <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="back-stack">
+            <div>
+              <button type="button" class="btn btn-danger btn-circle btn-lg btn-back">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="front-stack">
+            <div>
+              <button type="button" class="btn btn-success btn-circle btn-lg btn-front">
+                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+          <div class="repeat-stack">
+            <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat">
+              <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div id="actions">
-      <button type="button" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-play" aria-hidden="true" onclick="play()"></span>
+      <button type="button" class="btn btn-default btn-circle btn-lg btn-play">
+        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
       </button>
-      <button type="button" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-stop" aria-hidden="true" onclick="stop()"></span>
+      <button type="button" class="btn btn-default btn-circle btn-lg btn-stop">
+        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
       </button>
-      <button type="button" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-repeat" aria-hidden="true" onclick="reset()"></span>
+      <button type="button" class="btn btn-default btn-circle btn-lg btn-reset">
+        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       </button>
     </div>
   </div>
