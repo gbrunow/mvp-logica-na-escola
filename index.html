@@ -1,450 +1,130 @@
 <!DOCTYPE html>
+<html>
 <head>
   <meta charset="utf-8">
   <title>Laços de Repetição</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-  <!-- Latest compiled and minified JavaScript -->
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/tipsy.css" rel="stylesheet">
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <style>
-    #header{
-      /*background-color: gray;*/
-      height: 40px;
-      width: 100%;
-      text-align: center;
-      color: #DE6D77;
-      font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
-    }
-
-    #wrapper{
-      width: 850px;
-      height: auto;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    #screen {
-      height: 535px;
-      border: solid 2px #5C636F;
-      margin-top: 5px;
-      position: relative;
-      background-color: transparent;
-      background-image:       linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
-      background-size:100px 100px;
-  }
-
-    #vehicule{
-      bottom: 0;
-      position: absolute;
-    }
-
-    #command-panel{
-        width: 100%;
-        min-height: 55px;
-        margin: 0 !important;
-        height: auto;
-        border-color: #5C636F;
-        border-style: solid;
-        border-width: 2px;
-        border-top: none;
-        margin-top: 5px;
-        padding: 5px;
-    }
-/*'#ABB2BE', '#', '#5AB6C1', '#63ADE9', '#C57BDB', '#DE6D77']*/
-    #command-panel .front{
-        color: #DE6D77;
-    }
-
-    #command-panel .back{
-        color: #99C27C;
-    }
-
-    #command-panel .left{
-        color: #5AB6C1;
-    }
-
-    #command-panel .right{
-        color: #E1C090;
-    }
-
-    #command-panel .repeat, h2 .repeat{
-        color: white;
-    }
-
-    #command-panel .front{
-        color: #DE6D77;
-    }
-
-    .vehicule{
-      font-size: 5em;
-      margin: 5px;
-    }
-
-    .vehicule-ok{
-      color: white;
-    }
-
-    .vehicule-damaged{
-      color: #DE6D77;
-    }
-
-    #vehicule span{
-      transition: transform 500ms;
-    }
-
-    #actions{
-      width: auto;
-      border: solid 1px #282C34;
-      text-align: right;
-    }
-
-    #commands .btn-circle {
-      margin: 5px;
-    }
-
-    #commands > div {
-      float: left;
-    }
-
-    #commands-wrapper{
-      text-align: center;
-      width: 100%;
-    }
-
-    #commands {
-      display: inline-block;
-    }
-    #game-wrapper{
-      width: 790px;
-      float: left;
-    }
-
-    body {
-      background-color: #282C34;
-    }
-
-    btn-circle {
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      padding: 6px 0;
-      font-size: 12px;
-      line-height: 1.428571429;
-      border-radius: 15px;
-    }
-    button:focus {
-      outline:0 !important;
-    }
-
-    .btn-circle.btn-lg {
-      width: 50px;
-      height: 50px;
-      padding: 10px 16px;
-      font-size: 18px;
-      line-height: 1.33;
-      border-radius: 25px;
-    }
-    .btn-circle.btn-xl {
-      width: 70px;
-      height: 70px;
-      padding: 10px 16px;
-      font-size: 24px;
-      line-height: 1.33;
-      border-radius: 35px;
-    }
-
-    .turn-left {
-      transform: scale(-1, 1);
-    }
-
-    #actions > button {
-      margin-top: 5px;
-    }
-  </style>
-  <script>
-    var commandList = [];
-    var repeat = false;
-    var x = 0,
-        y = 0;
-    var degree = 0;
-
-    function execute(command){
-      var directionCommand = true;
-      var step = 50;
-      var w = (degree % 360 + 90) * Math.PI/180;
-
-      switch (command) {
-        case 'front':
-          x -=  step * Math.cos(w);
-          y -= step * Math.sin(w);
-          break;
-        case 'back':
-          x +=  step * Math.cos(w);
-          y += step * Math.sin(w);
-          break;
-        case 'left':
-          degree -= 90;
-          break;
-        case 'right':
-          degree += 90;
-          break;
-        case 'repeat':
-          repeat = true;
-          break;
-        default:
-          // directionCommand = false;
-          break;
-      }
-
-      x = Math.round(x);
-      y = Math.round(y);
-
-      if(directionCommand){
-        return move(command);
-      }
-    }
-    function move(command){
-      if(x < 0 || x > 700 || y < -450 || y > 0){
-        $('.vehicule').removeClass('vehicule-ok').addClass('vehicule-damaged');
-        // $('.vehicule').addClass('vehicule-damaged');
-        keepPlaying = false;
-        repeat = false;
-      }
-
-      x = x > 0 ? x : 0;
-      y = y < 0 ? y : 0;
-
-      x = x < 700 ? x : 700;
-      y = y > -450 ? y : -450;
-
-      // $("#vehicule").removeClass().addClass(command);
-      $("#vehicule>span").css({'transform' : 'rotate('+ degree +'deg)'});
-      var movement = $("#vehicule span").animate({ top: y, left: x });
-      return movement;
-    }
-
-    var hasRepeat = false;
-    var repeatIndex = 0;
-    function addCommand(command){
-      var icon;
-      var directionCommand = true;
-
-      switch (command) {
-        case 'front':
-          icon = 'glyphicon-arrow-right';
-          break;
-
-        case 'back':
-          icon = 'glyphicon-arrow-left';
-          break;
-
-        case 'left':
-          icon = 'glyphicon-share-alt turn-left';
-          break;
-
-        case 'right':
-          icon = 'glyphicon-share-alt';
-          break;
-
-        case 'repeat':
-          icon = 'glyphicon-retweet';
-          repeat = true;
-          repeatIndex = commandList.length;
-          // directionCommand = false;
-          break;
-
-        default:
-
-          break;
-      }
-
-      if(!hasRepeat){
-        // if(directionCommand){
-          commandList.push(command);
-        // }
-        $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true"></span><span>&nbsp;</span>');
-        // hasRepeat = repeat;
-        execute(command);
-      }
-    }
-
-    var keepPlaying = true;
-    function play(){
-      keepPlaying = true;
-      restart();
-      run(0);
-    }
-
-    function stop(){
-      keepPlaying = false;
-      repeat = false;
-      restart();
-    }
-
-    function run(index){
-      if(index >= commandList.length){
-        if(repeat){
-          index = repeatIndex;
-        } else {
-          keepPlaying = false;
-        }
-      }
-
-      if(keepPlaying){
-        var animate = execute(commandList[index]);
-        animate.promise().done(function(){
-          run(++index);
-        });
-      }
-    }
-
-    function restart(){
-      x = 0;
-      y = 0;
-      degree = 0;
-      repeat = false;
-      move('right');
-      $('.vehicule').removeClass('vehicule-damaged').addClass('vehicule-ok');
-    }
-    function reset(){
-      repeat = false;
-      hasRepeat = false;
-      commandList = [];
-      restart();
-      $('#command-panel').children().remove();
-      $('button').show('fast');
-    }
-
-    $(document).ready(function () {
-      var backs = 2,
-          fronts = 4,
-          lefts = 2,
-          rights = 2;
-
-      var backButton  = $('.back-stack').html();
-      var frontButton = $('.front-stack').html();
-      var leftButton  = $('.left-stack').html();
-      var rightButton = $('.right-stack').html();
-
-      for(var i = 0; i < backs; i++){
-        $('.back-stack').append(backButton);
-      }
-      for(var i = 0; i < fronts; i++){
-        $('.front-stack').append(frontButton);
-      }
-      for(var i = 0; i < lefts; i++){
-        $('.left-stack').append(leftButton);
-      }
-      for(var i = 0; i < rights; i++){
-        $('.right-stack').append(rightButton);
-      }
-
-
-      $('.btn-play').on('click', function(){
-        play();
-      });
-
-      $('.btn-stop').on('click', function(){
-        stop();
-      });
-
-      $('.btn-reset').on('click', function(){
-        reset();
-      });
-
-      $('.btn-front').on('click', function(){
-        addCommand('front');
-        $(this).toggle('fast');
-      });
-
-      $('.btn-back').on('click', function(){
-        addCommand('back');
-        $(this).toggle('fast');
-      });
-
-      $('.btn-left').on('click', function(){
-        addCommand('left');
-        $(this).toggle('fast');
-      });
-
-      $('.btn-right').on('click', function(){
-        addCommand('right');
-        $(this).toggle('fast');
-      });
-
-      $('.btn-repeat').on('click', function(){
-        addCommand('repeat');
-        $(this).toggle('fast');
-      });
-  });
-  </script>
+  <script src="js/game.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/jquery.tipsy.js"></script>
 </head>
 <body>
-  <div id="header">
-    <h2>Laços de Repetição
-      <span class="glyphicon glyphicon-retweet repeat" aria-hidden="true"></span>
-    </h2>
+  <div class="warning-wrapper" style="display: none;">
+    <h1 class"turn-warning"> Gire seu Aparelho </h1>
+    <span class="glyphicon glyphicon glyphicon-phone turn-sign" aria-hidden="true"></span>
   </div>
-  <div id="wrapper">
-    <div id="game-wrapper">
-      <div id="screen">
-        <div id="vehicule">
-          <span class="glyphicon glyphicon-plane vehicule vehicule-ok" aria-hidden="true"></span>
-        </div>
-      </div>
-      <div id="command-panel"> </div>
-      <div id="commands-wrapper">
-        <div id="commands">
-          <div class="left-stack">
-            <div>
-              <button type="button" class="btn btn-primary btn-circle btn-lg btn-left">
-                <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span>
-              </button>
-            </div>
-          </div>
-          <div class="right-stack">
-            <div>
-              <button type="button" class="btn btn-warning btn-circle btn-lg btn-right">
-                <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              </button>
-            </div>
-          </div>
-          <div class="back-stack">
-            <div>
-              <button type="button" class="btn btn-danger btn-circle btn-lg btn-back">
-                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-              </button>
-            </div>
-          </div>
-          <div class="front-stack">
-            <div>
-              <button type="button" class="btn btn-success btn-circle btn-lg btn-front">
-                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-              </button>
-            </div>
-          </div>
-          <div class="repeat-stack">
-            <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat">
-              <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
-            </button>
-          </div>
-        </div>
-      </div>
+  <div id="content-wrapper">
+    <div id="header">
+      <h2>Laços de Repetição
+        <span class="glyphicon glyphicon-retweet repeat" aria-hidden="true"></span>
+      </h2>
     </div>
-    <div id="actions">
-      <button type="button" class="btn btn-default btn-circle btn-lg btn-play">
-        <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="btn btn-default btn-circle btn-lg btn-stop">
-        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="btn btn-default btn-circle btn-lg btn-reset">
-        <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </button>
+    <div id="wrapper">
+      <div id="game-wrapper">
+        <div id="screen">
+          <div id="help-wrapper">
+              <div class="help-container">
+                <div class="help-text">
+                  experimente executar
+                  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span>&nbsp;</span>
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span><span>&nbsp;</span>
+                </div>
+              </div>
+              <div class="help-container">
+                <div class="help-text">
+                  tudo o que vier depois de <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> será executado repetidamente
+                </div>
+              </div>
+              <div class="help-container">
+                <div class="help-text">
+                  aperte play <span class="glyphicon glyphicon-play-circle " aria-hidden="true"></span> para reproduzir os comandos
+                </div>
+              </div>
+              <div class="help-container">
+                <button type="button" class="btn btn-default btn-gotit">entendi</button>
+              </div>
+          </div>
+          <div id="vehicule">
+            <span class="glyphicon glyphicon-plane vehicule vehicule-ok" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div id="command-panel"></div>
+        <div id="commands-wrapper">
+          <div id="commands">
+            <div class="left-stack">
+              <div class="stack-item">
+                <button type="button" class="btn btn-primary btn-circle btn-lg btn-left">
+                  <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="right-stack">
+              <div class="stack-item">
+                <button type="button" class="btn btn-warning btn-circle btn-lg btn-right">
+                  <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="back-stack">
+              <div class="stack-item">
+                <button type="button" class="btn btn-danger btn-circle btn-lg btn-back">
+                  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="front-stack">
+              <div class="stack-item">
+                <button type="button" class="btn btn-success btn-circle btn-lg btn-front">
+                  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="repeat-stack">
+              <div class="stack-item">
+                <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat">
+                  <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="actions">
+        <div class="btn-action-container">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-play">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="btn-action-container">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-stop">
+            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="btn-action-container">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-reset">
+            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="btn-action-container">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-help">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
+</html>
