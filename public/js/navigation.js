@@ -26,10 +26,8 @@ $(document).ready(function () {
     $('.right-stack').append(rightButton);
   }
 
-
-
-
   $('.btn-play').on('click', function(){
+    closeHelp();
     play();
   });
 
@@ -39,13 +37,6 @@ $(document).ready(function () {
 
   $('.btn-reset').on('click', function(){
     reset();
-  });
-
-  $('.btn-help').on('click', function(){
-    //show help
-    $('.tip-help').each(function(){
-      $(this).tipsy('show');
-    });
   });
 
   $('.btn-front').on('click', function(){
@@ -77,7 +68,7 @@ $(document).ready(function () {
     toggleHelp();
   });
 
-  $('.btn-gotit').on('click', function(){
+  $('.btn-gotIt').on('click', function(){
     toggleHelp();
   });
 
@@ -159,6 +150,12 @@ $(document).ready(function () {
   function toggleHelp(){
     $('.help-container').each(function(){
       $(this).slideToggle('slow');
+    });
+  }
+
+  function closeHelp(){
+    $('.help-container').each(function(){
+      $(this).slideUp('slow');
     });
   }
 

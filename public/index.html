@@ -11,9 +11,21 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
   <script src="js/game.js"></script>
   <script src="js/navigation.js"></script>
   <script src="js/jquery.tipsy.js"></script>
+  <script src="js/firebase-app.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-85363207-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
 </head>
 <body>
   <div class="warning-wrapper" style="display: none;">
@@ -54,7 +66,7 @@
                 </div>
               </div>
               <div class="help-container">
-                <button type="button" class="btn btn-default btn-gotit">entendi</button>
+                <button type="button" class="btn btn-default btn-gotIt" id="gotIt">entendi</button>
               </div>
           </div>
           <div id="vehicule">
@@ -66,35 +78,35 @@
           <div id="commands">
             <div class="left-stack">
               <div class="stack-item">
-                <button type="button" class="btn btn-primary btn-circle btn-lg btn-left">
+                <button type="button" class="btn btn-primary btn-circle btn-lg btn-left" id="left">
                   <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
             <div class="right-stack">
               <div class="stack-item">
-                <button type="button" class="btn btn-warning btn-circle btn-lg btn-right">
+                <button type="button" class="btn btn-warning btn-circle btn-lg btn-right" id="right">
                   <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
             <div class="back-stack">
               <div class="stack-item">
-                <button type="button" class="btn btn-danger btn-circle btn-lg btn-back">
+                <button type="button" class="btn btn-danger btn-circle btn-lg btn-back" id="back">
                   <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
             <div class="front-stack">
               <div class="stack-item">
-                <button type="button" class="btn btn-success btn-circle btn-lg btn-front">
+                <button type="button" class="btn btn-success btn-circle btn-lg btn-front" id="front">
                   <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
             <div class="repeat-stack">
               <div class="stack-item">
-                <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat">
+                <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat" id="repeat">
                   <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
                 </button>
               </div>
@@ -104,22 +116,22 @@
       </div>
       <div id="actions">
         <div class="btn-action-container">
-          <button type="button" class="btn btn-default btn-circle btn-lg btn-play">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-play" id="play">
             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-action-container">
-          <button type="button" class="btn btn-default btn-circle btn-lg btn-stop">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-stop" id="stop">
             <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-action-container">
-          <button type="button" class="btn btn-default btn-circle btn-lg btn-reset">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-reset" id="reset">
             <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
           </button>
         </div>
         <div class="btn-action-container">
-          <button type="button" class="btn btn-default btn-circle btn-lg btn-help">
+          <button type="button" class="btn btn-default btn-circle btn-lg btn-help" id="help">
             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
           </button>
         </div>
