@@ -140,7 +140,7 @@ $(document).ready(function () {
   })
 
   function checkOrientation(){
-    if($( window ).width() < $( window ).height()){
+    if($(window).width() < 850 && $(window).width() < $(window).height()){
       $(".warning-wrapper").fadeIn('fast');
     } else {
       $(".warning-wrapper").fadeOut('fast');
