@@ -1,3 +1,4 @@
+var auth;
 $(document).ready(function () {
   // Initialize Firebase
   const config = {
@@ -8,7 +9,7 @@ $(document).ready(function () {
     messagingSenderId: "1061942948043"
   };
   firebase.initializeApp(config);
-  // firebase.auth().signInAnonymously();
+
   var userRef,
       user,
       accessKey;
@@ -17,6 +18,9 @@ $(document).ready(function () {
   const usersRef = rootRef.child('users');
 
   firebase.auth().onAuthStateChanged(user => {
+    if(!user){
+      firebase.auth().signInAnonymously();
+    }
     userRef = usersRef.child(user.uid);
     var timeRef = userRef.child('accesses').push({ arrivedAt: firebase.database.ServerValue.TIMESTAMP });
     accessKey = timeRef.key;
