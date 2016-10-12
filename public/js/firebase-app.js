@@ -39,14 +39,14 @@ $(document).ready(function () {
   $('.btn-like').on('click', function(){
     //increment likes
     if(!usr.clicks.like || usr.clicks.like <= 1){
-      rootRef.child('likes').once('value', snap => {
+      usersRef.child('likes').once('value', snap => {
         var likes = snap.val()|0;
-        rootRef.update({ likes: likes + 1 });
+        usersRef.update({ likes: likes + 1 });
       });
     }
-    rootRef.child('total-likes').once('value', snap => {
+    usersRef.child('total-likes').once('value', snap => {
       var likes = snap.val()|0;
-      rootRef.update({ 'total-likes': likes + 1 });
+      usersRef.update({ 'total-likes': likes + 1 });
     })
 
 
