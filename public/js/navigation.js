@@ -121,6 +121,14 @@ $(document).ready(function () {
     }
   });
 
+  $('.btn-like').tipsy({
+    gravity: 'w',
+    html: true,
+    title: function(){
+        return 'Massa!';
+    }
+  });
+
   $('.front-stack').tipsy({
     gravity: 's',
     html: true,
