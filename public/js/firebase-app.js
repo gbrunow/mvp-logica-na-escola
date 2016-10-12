@@ -1,4 +1,8 @@
 var auth;
+var userRef,
+    usr,
+    accessKey;
+
 $(document).ready(function () {
   // Initialize Firebase
   const config = {
@@ -9,10 +13,6 @@ $(document).ready(function () {
     messagingSenderId: "1061942948043"
   };
   firebase.initializeApp(config);
-
-  var userRef,
-      user,
-      accessKey;
 
   const rootRef = firebase.database().ref();
   const usersRef = rootRef.child('users');
@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     //sync down user object
     userRef.on('value', snap => {
-      user = snap.val();
+      usr = snap.val();
     });
   });
 
@@ -35,6 +35,22 @@ $(document).ready(function () {
     var btn = $(this).attr('id');
     incrementButtonCount(btn);
   });
+
+  $('.btn-like').on('click', function(){
+    //increment likes
+    if(!usr.clicks.like || usr.clicks.like <= 1){
+      rootRef.child('likes').once('value', snap => {
+        var likes = snap.val()|0;
+        rootRef.update({ likes: likes + 1 });
+      });
+    }
+    rootRef.child('total-likes').once('value', snap => {
+      var likes = snap.val()|0;
+      rootRef.update({ 'total-likes': likes + 1 });
+    })
+
+
+  })
 
   function incrementButtonCount(btn){
     var update = {};
