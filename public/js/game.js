@@ -1,5 +1,6 @@
 var commandList = [];
-var repeat = false;
+var repeat = false,
+    showAction = false;
 var x = 0,
     y = 0;
 var degree = 0;
@@ -39,8 +40,11 @@ function execute(command){
     return move(command);
   }
 }
+
+const xlim = 712;
+const ylim = -465;
 function move(command){
-  if(x < 0 || x > 700 || y < -450 || y > 0){
+  if(x < 0 || x > xlim || y < ylim || y > 0){
     $('.vehicule').removeClass('vehicule-ok').addClass('vehicule-damaged');
     // $('.vehicule').addClass('vehicule-damaged');
     keepPlaying = false;
@@ -50,8 +54,8 @@ function move(command){
   x = x > 0 ? x : 0;
   y = y < 0 ? y : 0;
 
-  x = x < 700 ? x : 700;
-  y = y > -450 ? y : -450;
+  x = x < xlim ? x : xlim;
+  y = y > ylim ? y : ylim;
 
   // $("#vehicule").removeClass().addClass(command);
   $("#vehicule>span").css({'transform' : 'rotate('+ degree +'deg)'});
@@ -100,7 +104,7 @@ function addCommand(command, silent){
     // }
     $('#command-panel').append('<span class="glyphicon ' + icon + " " + command + '" aria-hidden="true"></span><span>&nbsp;</span>');
     // hasRepeat = repeat;
-    if(!silent){
+    if(!silent && showAction){
       execute(command);
     }
   }
@@ -151,4 +155,8 @@ function reset(){
   restart();
   $('#command-panel').children().remove();
   $('.stack-item').show('fast');
+}
+
+function toggleShowAction(){
+  showAction = !showAction;
 }

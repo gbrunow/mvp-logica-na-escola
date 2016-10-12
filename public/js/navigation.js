@@ -39,6 +39,16 @@ $(document).ready(function () {
     reset();
   });
 
+  $('.btn-help').on('click', function(){
+    toggleHelp();
+  });
+
+  $('.btn-show-hide').on('click', function(){
+    $('.btn-show-hide > span').toggleClass('glyphicon-eye-open');
+    $('.btn-show-hide > span').toggleClass('glyphicon-eye-close');
+    toggleShowAction();
+  });
+
   $('.btn-front').on('click', function(){
     addCommand('front');
     $(this).parent().toggle('fast');
@@ -64,10 +74,6 @@ $(document).ready(function () {
     $(this).parent().toggle('fast');
   });
 
-  $('.btn-help').on('click', function(){
-    toggleHelp();
-  });
-
   $('.btn-gotIt').on('click', function(){
     toggleHelp();
   });
@@ -77,63 +83,83 @@ $(document).ready(function () {
     html: true,
     title: function(){
         return 'Executar Comandos';
-    }});
+    }
+  });
 
   $('.btn-stop').tipsy({
     gravity: 'w',
     html: true,
     title: function(){
         return 'Parar Execução';
-    }});
+    }
+  });
 
   $('.btn-reset').tipsy({
     gravity: 'w',
     html: true,
     title: function(){
         return 'Reiniciar';
-    }});
+    }
+  });
 
   $('.btn-help').tipsy({
     gravity: 'w',
     html: true,
     title: function(){
         return 'Ajuda';
-    }});
+    }
+  });
+
+  $('.btn-show-hide').tipsy({
+    gravity: 'w',
+    html: true,
+    title: function(){
+      if(showAction)
+        return 'Ocultar comandos';
+      else
+        return 'Visualizar comandos'
+    }
+  });
 
   $('.front-stack').tipsy({
     gravity: 's',
     html: true,
     title: function(){
         return 'Seguir em Frente';
-    }});
+    }
+  });
 
   $('.back-stack').tipsy({
     gravity: 's',
     html: true,
     title: function(){
         return 'Retroceder';
-    }});
+    }
+  });
 
   $('.left-stack').tipsy({
     gravity: 's',
     html: true,
     title: function(){
         return 'Virar para a Esquerda';
-    }});
+    }
+  });
 
   $('.right-stack').tipsy({
     gravity: 's',
     html: true,
     title: function(){
         return 'Virar para a Direita';
-    }});
+    }
+  });
 
   $('.repeat-stack').tipsy({
     gravity: 's',
     html: true,
     title: function(){
         return 'Laço de Repetição';
-    }});
+    }
+  });
 
   $('body').on('orientationchange', function(){
     checkOrientation();

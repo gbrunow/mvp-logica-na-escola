@@ -7,24 +7,23 @@
 }
 
 #wrapper{
-  width: 850px;
+  width: 860px;
   height: auto;
   margin: 0 auto;
   position: relative;
 }
 
 #screen {
-  height: 535px;
+  height: 550px;
   border: solid 2px #5C636F;
   margin-top: 5px;
   position: relative;
-  background-color: transparent;
-  background-image:       linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
-  background-size:100px 100px;
+  background: url(../img/grid.png) -2px 48px;
 }
 
 #vehicule{
-  bottom: 0;
+  bottom: 0px;
+  left: 5px;
   position: absolute;
 }
 
@@ -64,7 +63,7 @@
 #help-wrapper{
   position: absolute;
   z-index: 2;
-  opacity: 0.55;
+  opacity: 0.65;
   top: 10px;
   left: 10px;
 }
@@ -102,6 +101,7 @@ div.help-container{
 
 #vehicule span{
   transition: transform 500ms;
+  padding-right: 5px;
 }
 
 #actions{
@@ -132,7 +132,7 @@ div.help-container{
   display: inline-block;
 }
 #game-wrapper{
-  width: 790px;
+  width: 800px;
   float: left;
 }
 
