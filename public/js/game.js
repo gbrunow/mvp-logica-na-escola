@@ -33,10 +33,13 @@ var objective = {
       { x: 1, y: 2 },
       { x: 1, y: 4 },
       { x: 1, y: 6 },
+      { x: 2, y: 2 },
+      { x: 2, y: 4 },
+      { x: 2, y: 6 },
     ]
   },
   4:{ allowPicking: false,
-    commands: { back: 2, front: 3, left: 2, right: 2, repeat: 1 },
+    commands: { back: 3, front: 4, left: 2, right: 2, repeat: 1 },
     targets: [
       { x: 1, y: 1 },
       { x: 2, y: 2 },
