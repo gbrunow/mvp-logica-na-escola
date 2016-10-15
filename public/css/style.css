@@ -4,6 +4,7 @@
   text-align: center;
   color: #DE6D77;
   font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
+  font-weight: 300;
 }
 
 #wrapper{
@@ -19,12 +20,7 @@
   margin-top: 5px;
   position: relative;
   background: url(../img/grid.png) -2px 48px;
-}
-
-#vehicule{
-  bottom: 0px;
-  left: 5px;
-  position: absolute;
+  background-color: rgba(0, 0, 0, 0.20);
 }
 
 #command-panel{
@@ -38,6 +34,7 @@
     border-top: none;
     margin-top: 5px;
     padding: 5px;
+    background-color: rgba(0, 0, 0, 0.10);
 }
 /*'#ABB2BE', '#', '#5AB6C1', '#63ADE9', '#C57BDB', '#DE6D77']*/
 #command-panel .front, #help-wrapper .front{
@@ -102,6 +99,21 @@ div.help-container{
 #vehicule span{
   transition: transform 500ms;
   padding-right: 5px;
+}
+
+#vehicule, div.target{
+  bottom: 0px;
+  left: 5px;
+  position: absolute;
+}
+span.target{
+  font-size: 3em;
+  margin: 25px;
+  color: white;
+}
+
+.target-achieved{
+  color: #99C27C !important;
 }
 
 #actions{
@@ -184,7 +196,6 @@ h1 {
 .warning-wrapper{
   background-color: white;
   text-align: center;
-  text-align: center;
   display:table-cell;
   vertical-align:middle;
   width: 100vw;
@@ -199,4 +210,46 @@ h1 {
 div.stack-item {
   margin-bottom: 5px;
   margin-right: 5px;
+}
+
+div.button-source {
+  display: none;
+}
+div.next-level-container{
+  padding-top: 250px;
+}
+div.next-level-container, div.end-container {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 99;
+  position: absolute;
+  text-align: center;
+}
+
+.code {
+  color: white;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  padding-top: 150px;
+  font-size: 14pt;
+}
+
+span.code-purple{
+  color: #C57BDB;
+}
+
+span.code-blue{
+  color: #65B0ED;
+}
+
+span.code-green{
+  color: #99C27C;
+}
+
+div.btn-next{
+  margin-right: auto; margin-left: auto;
+  width: auto;
+  height: auto;
 }

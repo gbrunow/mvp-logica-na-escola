@@ -41,13 +41,24 @@
     <div id="wrapper">
       <div id="game-wrapper">
         <div id="screen">
+          <div class="next-level-container" hidden>
+            <button type="button" class="btn btn-default btn-next-level" id="next-level">próximo nível</button>
+          </div>
+          <div class="end-container" hidden>
+            <pre class="code">
+              <span class="code-purple">function</span> <span class="code-blue">fimDoJogo</span>( ){
+                print(<span class="code-green">"isso é tudo por enquanto :/"</span>);
+                print(<span class="code-green">"obrigado pelo interesse!"</span>);
+              }
+            </pre>
+          </div>
           <div id="help-wrapper">
-            <div class="help-container">
+            <div class="help-container" hidden>
               <div class="help-text">
-                aperte <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> para visualizar os comandos em tempo real
+                clique no olho <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> para visualizar os comandos em tempo real
               </div>
             </div>
-            <div class="help-container">
+            <!-- <div class="help-container">
               <div class="help-text">
                 experimente executar
                 <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span>&nbsp;</span>
@@ -59,63 +70,83 @@
                 <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span><span>&nbsp;</span>
                 <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span><span>&nbsp;</span>
               </div>
-            </div>
-            <div class="help-container">
+            </div> -->
+            <div class="help-container" hidden>
               <div class="help-text">
-                tudo o que vier depois de <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> será executado repetidamente
+                passe por todas as bandeiras <span class="glyphicon glyphicon-flag" aria-hidden="true"></span> para avançar de nível
               </div>
             </div>
-            <div class="help-container">
+            <div class="help-container" hidden>
+              <div class="help-text">
+                tudo o que vier depois do laço <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> será executado repetidamente
+              </div>
+            </div>
+            <div class="help-container" hidden>
               <div class="help-text">
                 aperte play <span class="glyphicon glyphicon-play-circle " aria-hidden="true"></span> para reproduzir os comandos
               </div>
             </div>
-            <div class="help-container">
+            <div class="help-container" hidden>
               <button type="button" class="btn btn-default btn-gotIt" id="gotIt">entendi</button>
             </div>
           </div>
           <div id="vehicule">
             <span class="glyphicon glyphicon-plane vehicule vehicule-ok" aria-hidden="true"></span>
           </div>
+          <div class="target-container">
+            <div class="target" style="display: none;">
+              <span class="glyphicon glyphicon-flag target" aria-hidden="true"></span>
+            </div>
+            <div class="dynamic"></div>
+          </div>
         </div>
         <div id="command-panel"></div>
         <div id="commands-wrapper">
           <div id="commands">
-            <div class="left-stack">
+            <div class="left-source button-source">
               <div class="stack-item">
-                <button type="button" class="btn btn-primary btn-circle btn-lg btn-left" id="left">
+                <button type="button" class="btn btn-primary btn-circle btn-lg btn-command btn-left" id="left">
                   <span class="glyphicon glyphicon-share-alt turn-left" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
-            <div class="right-stack">
+            <div class="left-stack dynamic"></div>
+
+            <div class="right-source button-source">
               <div class="stack-item">
-                <button type="button" class="btn btn-warning btn-circle btn-lg btn-right" id="right">
+                <button type="button" class="btn btn-warning btn-circle btn-lg btn-command btn-right" id="right">
                   <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
-            <div class="back-stack">
+            <div class="right-stack dynamic"></div>
+
+            <div class="back-source button-source">
               <div class="stack-item">
-                <button type="button" class="btn btn-danger btn-circle btn-lg btn-back" id="back">
+                <button type="button" class="btn btn-danger btn-circle btn-lg btn-command btn-back" id="back">
                   <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
-            <div class="front-stack">
+            <div class="back-stack dynamic"></div>
+
+            <div class="front-source button-source">
               <div class="stack-item">
-                <button type="button" class="btn btn-success btn-circle btn-lg btn-front" id="front">
+                <button type="button" class="btn btn-success btn-circle btn-lg btn-command btn-front" id="front">
                   <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
-            <div class="repeat-stack">
+            <div class="front-stack dynamic"></div>
+
+            <div class="repeat-source button-source">
               <div class="stack-item">
-                <button type="button" class="btn btn-default btn-circle btn-lg btn-repeat" id="repeat">
+                <button type="button" class="btn btn-default btn-circle btn-lg btn-command btn-repeat" id="repeat">
                   <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>
                 </button>
               </div>
             </div>
+            <div class="repeat-stack dynamic"></div>
           </div>
         </div>
       </div>
@@ -149,6 +180,25 @@
           <button type="button" class="btn btn-primary btn-circle btn-lg btn-like" id="like">
             <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="spy-modal" tabindex="-1" role="dialog" aria-labelledby="spyModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-spy-modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="spyModalLabel">Hã hã, sem espionar! lol</h4>
+        </div>
+        <div class="modal-body">
+          Visuaização de comandos desabilitada neste nível.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" id='ok-spy-modal'>Ok</button>
         </div>
       </div>
     </div>
