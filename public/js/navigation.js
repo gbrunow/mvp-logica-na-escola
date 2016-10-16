@@ -23,6 +23,10 @@ $(document).ready(function () {
     toggleShowAction();
   });
 
+  $('.btn-like').on('click', function(){
+    $(this).hide('fast');
+  });
+
   $('.btn-gotIt').on('click', function(){
     toggleHelp();
   });
@@ -30,6 +34,7 @@ $(document).ready(function () {
   $('.btn-next-level').on('click', function(){
     toggleNextLevelScreen();
     nextLevel();
+    $(this).show('fast');
   });
 
   $('.btn-play').tipsy({
@@ -125,10 +130,7 @@ $(document).ready(function () {
 
   $('body').on('orientationchange', function(){
     checkOrientation();
-  })
-
-  loadGame();
-
+  });
 });
 
 function checkOrientation(){

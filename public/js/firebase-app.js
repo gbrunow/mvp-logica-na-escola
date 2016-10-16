@@ -25,9 +25,16 @@ $(document).ready(function () {
     var timeRef = userRef.child('accesses').push({ arrivedAt: firebase.database.ServerValue.TIMESTAMP });
     accessKey = timeRef.key;
 
+    //load game on current user level
+    userRef.child('level').once('value', snap => {
+      level = snap.val() | 0;
+      loadGame();
+    });
+
     //sync down user object
     userRef.on('value', snap => {
       usr = snap.val();
+      level = usr.level;
     });
   });
 
@@ -68,7 +75,12 @@ $(document).ready(function () {
       userRef.child('clicks').update(update);
     });
   }
+
   $(window).unload( function() {
     userRef.child('accesses').child(accessKey).update({ leftAt: firebase.database.ServerValue.TIMESTAMP });
   });
 });
+
+function saveGame(){
+  userRef.update({ level: level });
+}

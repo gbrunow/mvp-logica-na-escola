@@ -225,6 +225,7 @@ function reset(){
 function nextLevel(){
   completed = false;
   level++;
+  saveGame();
   if(Object.keys(objective).length > level){
     closeHelp();
     hideAction();
