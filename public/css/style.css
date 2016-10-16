@@ -234,6 +234,8 @@ div.next-level-container, div.end-container {
   text-align: left;
   padding-top: 150px;
   font-size: 14pt;
+  font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
+  font-weight: 300;
 }
 
 span.code-purple{
@@ -252,4 +254,16 @@ div.btn-next{
   margin-right: auto; margin-left: auto;
   width: auto;
   height: auto;
+}
+
+div.statistics-wrapper{
+  float: left;
+}
+
+div.statistics-wrapper > table  td{
+  padding: 5px 50px 5px 5px;
+}
+
+div.statistics-wrapper > table{
+  background-color: grey;
 }

@@ -8,56 +8,58 @@ var degree = 0,
 var level = 0,
     completed = false;
 
-var objective = {
-  0:{ allowPicking: true,
-    commands: { back: 4, front: 4, left: 4, right: 4, repeat: 1 },
-    targets: [
-      { x: 3, y: 1 },
-    ]
-  },
-  1:{ allowPicking: true,
-    commands: { back: 0, front: 1, left: 0, right: 0, repeat: 1 },
-    targets: [
-      { x: 0, y: 5 },
-    ]
-  },
-  2:{ allowPicking: true,
-    commands: { back: 1, front: 3, left: 1, right: 2, repeat: 1 },
-    targets: [
-      { x: 5, y: 2 },
-    ]
-  },
-  3:{ allowPicking: true,
-    commands: { back: 2, front: 5, left: 2, right: 2, repeat: 1 },
-    targets: [
-      { x: 1, y: 2 },
-      { x: 1, y: 4 },
-      { x: 1, y: 6 },
-      { x: 2, y: 2 },
-      { x: 2, y: 4 },
-      { x: 2, y: 6 },
-    ]
-  },
-  4:{ allowPicking: false,
-    commands: { back: 3, front: 4, left: 2, right: 2, repeat: 1 },
-    targets: [
-      { x: 1, y: 1 },
-      { x: 2, y: 2 },
-      { x: 3, y: 3 },
-      { x: 4, y: 4 },
-      { x: 5, y: 5 },
-      { x: 6, y: 6 },
-    ]
-  },
-  5:{ allowPicking: false,
-    commands: { back: 3, front: 7, left: 2, right: 2, repeat: 1 },
-    targets: [
-      { x: 3, y: 3 },
-      { x: 6, y: 6 },
-      { x: 9, y: 9 },
-    ]
-  },
-};
+var objective;
+
+// var objective = {
+//   0:{ allowPicking: true,
+//     commands: { back: 4, front: 4, left: 4, right: 4, repeat: 1 },
+//     targets: [
+//       { x: 3, y: 1 },
+//     ]
+//   },
+//   1:{ allowPicking: true,
+//     commands: { back: 0, front: 1, left: 0, right: 0, repeat: 1 },
+//     targets: [
+//       { x: 0, y: 5 },
+//     ]
+//   },
+//   2:{ allowPicking: true,
+//     commands: { back: 1, front: 3, left: 1, right: 2, repeat: 1 },
+//     targets: [
+//       { x: 5, y: 2 },
+//     ]
+//   },
+//   3:{ allowPicking: true,
+//     commands: { back: 2, front: 5, left: 2, right: 2, repeat: 1 },
+//     targets: [
+//       { x: 1, y: 2 },
+//       { x: 1, y: 4 },
+//       { x: 1, y: 6 },
+//       { x: 2, y: 2 },
+//       { x: 2, y: 4 },
+//       { x: 2, y: 6 },
+//     ]
+//   },
+//   4:{ allowPicking: false,
+//     commands: { back: 3, front: 4, left: 2, right: 2, repeat: 1 },
+//     targets: [
+//       { x: 1, y: 1 },
+//       { x: 2, y: 2 },
+//       { x: 3, y: 3 },
+//       { x: 4, y: 4 },
+//       { x: 5, y: 5 },
+//       { x: 6, y: 6 },
+//     ]
+//   },
+//   5:{ allowPicking: false,
+//     commands: { back: 3, front: 7, left: 2, right: 2, repeat: 1 },
+//     targets: [
+//       { x: 3, y: 3 },
+//       { x: 6, y: 6 },
+//       { x: 9, y: 9 },
+//     ]
+//   },
+// };
 
 
 function execute(command){
