@@ -40,7 +40,8 @@ function calcStatistics(){
       }
 
       if(users[user].level){
-        levelReach[users[user].level] = levelReach[users[user].level] | 0 + 1;
+        var reach = levelReach[users[user].level] | 0;
+        levelReach[users[user].level] =  reach + 1;
       }
     }
 
