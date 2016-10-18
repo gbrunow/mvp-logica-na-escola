@@ -70,14 +70,28 @@ function showStatistics(){
   $('#totalLikes').html(totalLikes);
 
   $('#levelTable').empty();
-  $('#levelTable').append('<th>nível</th><th>percentual</th>');
+  $('#levelTable').append('<th>nível</th><th colspan="4">percentual</th>');
   var levelsReach = 0;
   for(var level in levelReach){
     var reach = (levelReach[level] / accesses)*100;
-    $('#levelTable').append('<tr><td>' + level + '</td><td>' + reach.toFixed(2) + '%</td></tr>');
+    levelReach[level] = reach;
     levelsReach += reach;
   }
   var unknownReach = 100 - levelsReach;
+
+  var thirdReach = 100;
+  for(var level in levelReach){
+    var reach = levelReach[level];
+    var secondaryReach = (reach/levelsReach) * 100;
+    $('#levelTable').append(
+      '<tr>'
+        + '<td>' + level + '</td>'
+        + '<td>' + reach.toFixed(2) + '%</td>'
+        + '<td>' + secondaryReach.toFixed(2) + '%</td>'
+        + '<td>' + thirdReach.toFixed(2) + '%</td>' +
+      '</tr>');
+    thirdReach -= secondaryReach;
+  }
 
   $('#levelTable').append('<tr><td> ?? </td><td>' + unknownReach.toFixed(2) + '%</td></tr>');
 }
