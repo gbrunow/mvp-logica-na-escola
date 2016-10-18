@@ -25,26 +25,33 @@ function calcStatistics(){
     var totalTime = 0;
     totalClicks = 0;
     levelReach = [];
+
+    var ignored  = 0;
     for(var user in users){
-      if(users[user].clicks){
-        totalClicks += users[user].clicks.total | 0;
-      }
-
-      var userAccesses = users[user].accesses;
-      for(var userAccess in userAccesses){
-        var arrived = userAccesses[userAccess].arrivedAt;
-        var left = userAccesses[userAccess].leftAt;
-        if(arrived && left){
-          totalTime += left - arrived;
+      if(!users[user].ignore){
+        if(users[user].clicks){
+          totalClicks += users[user].clicks.total | 0;
         }
-      }
 
-      if(users[user].level){
-        var reach = levelReach[users[user].level] | 0;
-        levelReach[users[user].level] =  reach + 1;
+        var userAccesses = users[user].accesses;
+        for(var userAccess in userAccesses){
+          var arrived = userAccesses[userAccess].arrivedAt;
+          var left = userAccesses[userAccess].leftAt;
+          if(arrived && left){
+            totalTime += left - arrived;
+          }
+        }
+
+        if(users[user].level){
+          var reach = levelReach[users[user].level] | 0;
+          levelReach[users[user].level] =  reach + 1;
+        }
+      } else {
+        ignored++;
       }
     }
 
+    accesses -= ignored;
     avgTime = totalTime/(accesses*1000);
     avgClicks = totalClicks/accesses;
 
@@ -63,8 +70,21 @@ function showStatistics(){
 
   $('#levelTable').empty();
   $('#levelTable').append('<th>nível</th><th>percentual</th>');
+  var levelsReach = 0;
   for(var level in levelReach){
     var reach = (levelReach[level] / accesses)*100;
     $('#levelTable').append('<tr><td>' + level + '</td><td id="acessos">' + reach.toFixed(2) + '%</td></tr>');
+    levelsReach += reach;
   }
+  var unknownReach = 100 - levelsReach;
+
+  $('#levelTable').append('<tr><td> ?? </td><td id="acessos">' + unknownReach.toFixed(2) + '%</td></tr>');
+}
+
+function countMeOut(){
+  userRef.update({ ignore: true });
+}
+
+function countMeIn(){
+  userRef.update({ ignore: false });
 }
