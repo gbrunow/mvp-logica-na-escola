@@ -56,6 +56,7 @@ function calcStatistics(){
     avgClicks = totalClicks/accesses;
 
     showStatistics();
+    showSessionStatus();
   });
 }
 
@@ -73,12 +74,12 @@ function showStatistics(){
   var levelsReach = 0;
   for(var level in levelReach){
     var reach = (levelReach[level] / accesses)*100;
-    $('#levelTable').append('<tr><td>' + level + '</td><td id="acessos">' + reach.toFixed(2) + '%</td></tr>');
+    $('#levelTable').append('<tr><td>' + level + '</td><td>' + reach.toFixed(2) + '%</td></tr>');
     levelsReach += reach;
   }
   var unknownReach = 100 - levelsReach;
 
-  $('#levelTable').append('<tr><td> ?? </td><td id="acessos">' + unknownReach.toFixed(2) + '%</td></tr>');
+  $('#levelTable').append('<tr><td> ?? </td><td>' + unknownReach.toFixed(2) + '%</td></tr>');
 }
 
 function countMeOut(){
@@ -87,4 +88,13 @@ function countMeOut(){
 
 function countMeIn(){
   userRef.update({ ignore: false });
+}
+
+function showSessionStatus(){
+  $('#statusTable').empty();
+  var status = "considerada";
+  if(usr.ignore){
+    status ="ignorada";
+  }
+  $('#statusTable').append('<tr><td>sessão ' + status + '</td></tr>');
 }
