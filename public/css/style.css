@@ -273,6 +273,11 @@ div.statistics-wrapper > table{
 
 th {
   text-align: center;
+  padding: 5px;
   border-bottom: 2px solid white;
-  padding-right: 25px;
+}
+
+#levelTable td {
+  text-align: center;
+  border-right: 2px solid white;
 }

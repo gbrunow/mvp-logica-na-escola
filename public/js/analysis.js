@@ -93,7 +93,8 @@ function showStatistics(){
     thirdReach -= secondaryReach;
   }
 
-  $('#levelTable').append('<tr><td> ?? </td><td>' + unknownReach.toFixed(2) + '%</td></tr>');
+  $('#levelTable').append('<tr><td> ?? </td><td>' + unknownReach.toFixed(2) + '%</td><td></td><td></td></tr>');
+  $("#levelTable td:last-child").css({border:"none"});
 }
 
 function countMeOut(){
